@@ -1,4 +1,4 @@
-const CACHE_NAME = 'proseka-v1';
+const CACHE_NAME = 'proseka-v1.1';
 const ASSETS = [
   './',
   './index.html',
@@ -6,15 +6,15 @@ const ASSETS = [
   'https://unpkg.com/7.css'
 ];
 
-// インストール時に必要な資産をキャッシュ
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(ASSETS).catch(err => console.error('Cache add error:', err));
+    })
   );
   self.skipWaiting();
 });
 
-// 古いキャッシュを削除
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys => Promise.all(
@@ -24,7 +24,6 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// フェッチ処理 (PWAインストールのための要件)
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => {
