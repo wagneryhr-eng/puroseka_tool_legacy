@@ -361,14 +361,27 @@
             updateCounterUI();
         }
         renderHistory();
-
-        // サービスワーカーの登録 (PWA用)
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(reg => console.log('Service Worker registered!'))
-                .catch(err => console.log('Service Worker registration failed:', err));
-        }
     };
+
+    // サービスワーカーの登録 (PWA用 - ロード直後に実行)
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js', { scope: './' })
+            .then(reg => {
+                console.log('Service Worker registered!');
+                // アップデートがあれば即時反映
+                reg.onupdatefound = () => {
+                    const installingWorker = reg.installing;
+                    installingWorker.onstatechange = () => {
+                        if (installingWorker.state === 'installed') {
+                            if (navigator.serviceWorker.controller) {
+                                console.log('New content is available; please refresh.');
+                            }
+                        }
+                    };
+                };
+            })
+            .catch(err => console.log('Service Worker registration failed:', err));
+    }
 
     // タブ切り替え
     function showTab(tabId) {
