@@ -1,12 +1,10 @@
 {
   "name": "プロセカ周回ツール",
   "short_name": "周回ツール",
-  "id": "/proseka-tool-legacy/",
-  "description": "プロセカのマルチ実効値計算と周回カウンター",
-  "start_url": "./index.html",
+  "description": "プロセカのスコア計算と周回管理ツール",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "orientation": "portrait",
   "background_color": "#87CEEB",
   "theme_color": "#FF69B4",
@@ -28,12 +26,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "https://via.placeholder.com/512x512/FF69B4/FFFFFF?text=プロセカ周回",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
     }
   ]
 }
