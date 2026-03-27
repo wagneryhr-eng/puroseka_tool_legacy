@@ -2,200 +2,536 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>プロセカ周回ツール - Pink Edition</title>
-    
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#FF69B4">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="周回ツール">
-    <link rel="apple-touch-icon" href="https://via.placeholder.com/192x192/FF69B4/FFFFFF.png?text=P">
-    
-    <link rel="stylesheet" href="https://unpkg.com/7.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>プロセカ周回ツール</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff88aa">
     <style>
-        body { background-color: #87CEEB; margin: 0; padding: 10px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; font-family: "Segoe UI", "Meiryo", sans-serif; }
-        .window { width: 100%; max-width: 450px; box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3); border: 1px solid #FF69B4; }
-        .title-bar { background: linear-gradient(180deg, #ff99cc 0%, #ff3399 100%); border-bottom: 1px solid #ff0066; }
-        .window-body { margin: 12px; background: #FFF0F5; padding: 4px; border-radius: 2px; }
-        menu[role="tablist"] { margin-bottom: -1px; gap: 2px; overflow-x: auto; white-space: nowrap; padding-left: 5px; padding-top: 5px; z-index: 2; position: relative; }
-        menu[role="tablist"] li { margin-right: 0; display: inline-block; }
-        menu[role="tablist"] li a { padding: 10px 22px; font-size: 1rem; display: block; background: linear-gradient(180deg, #f8f8f8 0%, #e1e1e1 100%); border: 1px solid #8E8F8F; border-bottom: none; border-top-left-radius: 4px; border-top-right-radius: 4px; color: #333; text-decoration: none; position: relative; top: 2px; }
-        menu[role="tablist"] li:not(.active) a { background: linear-gradient(180deg, #FFF0F5 0%, #FFE4E1 100%); border-color: #FFB6C1; }
-        menu[role="tablist"] li.active a { background: white; font-weight: bold; color: #FF1493; border: 1px solid #FFB6C1; border-bottom: 1px solid white !important; top: 0; padding-bottom: 11px; z-index: 3; }
-        .tab-content { display: none; padding: 20px 15px; background: white; border: 1px solid #FFB6C1; box-shadow: 0 -1px 0 white inset; min-height: 320px; position: relative; z-index: 1; }
-        .tab-content.active { display: block; }
-        fieldset { border-color: #FFB6C1; background: #FFF9FA; }
-        legend { color: #FF1493; font-weight: bold; }
-        .field-row-stacked { margin-bottom: 15px; }
-        .field-row-stacked label { margin-bottom: 5px; display: block; font-weight: bold; color: #D81B60; }
-        input[type="number"] { width: 100%; height: 42px; font-size: 1.1rem; padding: 0 10px; border: 1px solid #FFB6C1; }
-        button { min-height: 44px; min-width: 90px; font-size: 1rem !important; padding: 0 15px; cursor: pointer; }
-        .result-display { margin-top: 20px; padding: 15px; background: #FFF0F5; border: 2px dashed #FF69B4; text-align: center; }
-        .result-value { font-size: 2.5rem; font-weight: bold; color: #FF1493; }
-        .counter-box { text-align: center; }
-        .counter-value { font-size: 5rem; font-weight: bold; margin: 15px 0; font-family: "Consolas", monospace; background: #222; color: #FF69B4; padding: 20px; border: 4px inset #FFB6C1; text-shadow: 0 0 12px #FF69B4; }
-        .message-box { min-height: 50px; margin-bottom: 10px; font-weight: bold; color: #FF1493; font-size: 1.1rem; }
-        .history-list { list-style: none; padding: 0; margin: 0; max-height: 350px; overflow-y: auto; border: 1px inset #FFB6C1; background: white; }
-        .history-item { padding: 12px 10px; border-bottom: 1px solid #FFF0F5; display: flex; justify-content: space-between; }
-        .history-item span:last-child { color: #FF1493; font-weight: bold; }
-        .empty-state { text-align: center; color: #FFB6C1; padding: 40px 0; }
-        .button-group { display: flex; gap: 10px; margin-top: 15px; }
-        .button-group button { flex: 1; }
-        .status-bar { background: #FFE4E1; color: #FF69B4; border-top: 1px solid #FFB6C1; display: flex; justify-content: space-between; }
-        #pwa-status { font-weight: bold; }
+        :root {
+            --win-pink: #ff88aa;
+            --win-glass-bg: rgba(255, 136, 170, 0.4);
+            --win-border-outer: rgba(0, 0, 0, 0.3);
+            --win-border-inner: rgba(255, 255, 255, 0.5);
+            --win-glow: 0 0 15px rgba(255, 136, 170, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Meiryo UI', Meiryo, sans-serif;
+            background: linear-gradient(135deg, #ff99cc 0%, #ffcce5 40%, #ffb3d9 60%, #ff80bf 100%);
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow: hidden; /* Desktop shouldn't scroll, window should */
+        }
+
+        /* Windows 7 Wallpaper Effect */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.3) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Window Container */
+        .win7-window {
+            margin: 10px;
+            margin-bottom: 70px; /* Taskbar space */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--win-glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 8px 8px 0 0;
+            border: 1px solid var(--win-border-outer);
+            box-shadow: 
+                inset 0 0 0 1px var(--win-border-inner),
+                0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            animation: windowPop 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+        }
+
+        @keyframes windowPop {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Title Bar */
+        .win7-title-bar {
+            height: 32px;
+            display: flex;
+            align-items: center;
+            padding: 0 5px 0 8px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, transparent 50%);
+            position: relative;
+        }
+
+        .win7-title-bar .app-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
+        }
+
+        .win7-title-bar .title-text {
+            font-size: 0.85rem;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Window Controls */
+        .win7-controls {
+            display: flex;
+            gap: 1px;
+            margin-top: -2px;
+        }
+
+        .win-btn {
+            width: 30px;
+            height: 18px;
+            border: 1px solid rgba(0,0,0,0.3);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.1s;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        .win-btn:active {
+            background: rgba(0,0,0,0.2);
+        }
+
+        .win-btn svg {
+            width: 10px;
+            height: 10px;
+            fill: white;
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));
+        }
+
+        .win-btn.close {
+            width: 45px;
+            background: linear-gradient(to bottom, #f8a1a1 0%, #d83030 50%, #b80000 51%, #e84040 100%);
+            border-color: #800;
+        }
+
+        .win-btn.close:active {
+            background: #a00;
+        }
+
+        /* Content Area */
+        .win7-content {
+            flex-grow: 1;
+            background: #f0f0f0;
+            margin: 0 4px 4px 4px;
+            border: 1px solid rgba(0,0,0,0.2);
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Classic Win7 Elements inside Content */
+        .card {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            margin: 0 0 15px 0;
+            font-size: 1rem;
+            color: #003399;
+            font-weight: normal;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 5px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #aaa;
+            background: #fff;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input[type="number"]:focus {
+            border-color: #3399ff;
+            box-shadow: 0 0 3px rgba(51,153,255,0.5);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #707070;
+            border-radius: 3px;
+            font-size: 0.95rem;
+            color: #000;
+            cursor: pointer;
+            background: linear-gradient(to bottom, #f2f2f2 0%, #ebebeb 50%, #dddddd 51%, #cfcfcf 100%);
+            box-shadow: inset 0 1px 0 #fff;
+            text-align: center;
+        }
+
+        .btn:active {
+            background: #ccc;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            border-color: #d63384;
+            color: #fff;
+            background: linear-gradient(to bottom, #ff99cc 0%, #ff88aa 50%, #ff5c93 51%, #ff70a5 100%);
+            text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+        }
+
+        .btn-mint {
+            background: linear-gradient(to bottom, #fff 0%, #d1f7ef 5%, #33eecc 50%, #29d9ba 51%, #31e0c2 100%);
+            border-color: #26b39a;
+        }
+
+        /* Taskbar */
+        .win7-taskbar {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(255, 136, 170, 0.7) 0%, rgba(255, 136, 170, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            gap: 5px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+            z-index: 2000;
+        }
+
+        .taskbar-item {
+            width: 50px;
+            height: 34px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .taskbar-item img, .taskbar-item span {
+            font-size: 1.4rem;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+        }
+
+        .taskbar-item.active {
+            background: rgba(255,255,255,0.3);
+            box-shadow: 
+                inset 0 0 0 1px rgba(255,255,255,0.4),
+                inset 0 10px 10px rgba(255,255,255,0.2);
+        }
+
+        .taskbar-item.active::after {
+            content: "";
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            box-shadow: 0 0 5px white;
+        }
+
+        /* Counter Elements */
+        .counter-value {
+            font-size: 5rem;
+            font-weight: bold;
+            color: #d63384;
+            margin: 10px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .result-display {
+            text-align: center;
+            padding: 15px;
+            background: #e1eaf7;
+            border: 1px solid #adc9ed;
+            border-radius: 4px;
+        }
+
+        .result-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #003399;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
     </style>
 </head>
 <body>
 
-<div class="window">
-    <div class="title-bar">
-        <div class="title-bar-text">プロセカ周回ツール v1.2</div>
-        <div class="title-bar-controls"><button aria-label="Close"></button></div>
-    </div>
-    <div class="window-body">
-        <menu role="tablist">
-            <li role="tab" class="active" id="tab-btn-calc"><a href="#calc" onclick="showTab('calc')">計算</a></li>
-            <li role="tab" id="tab-btn-counter"><a href="#counter" onclick="showTab('counter')">カウンター</a></li>
-            <li role="tab" id="tab-btn-history"><a href="#history" onclick="showTab('history')">履歴</a></li>
-        </menu>
-
-        <div class="window" role="tabpanel">
-            <div id="tab-calc" class="tab-content active">
-                <fieldset>
-                    <legend>マルチ計算</legend>
-                    <div class="field-row-stacked"><label>リーダー (%)</label><input type="number" id="leader" value="130"></div>
-                    <div class="field-row-stacked"><label>サブ全員の合計 (%)</label><input type="number" id="sub-total" value="440"></div>
-                    <section class="field-row" style="justify-content: flex-end;"><button onclick="calculate()">計算</button></section>
-                </fieldset>
-                <div class="result-display" id="calc-result" style="display:none;"><p>マルチスコアアップ値</p><div class="result-value" id="result-val">0%</div></div>
+<div class="win7-window">
+    <div class="win7-title-bar">
+        <svg class="app-icon" viewBox="0 0 512 512">
+            <circle cx="256" cy="256" r="256" fill="#ff88aa"/>
+            <text x="50%" y="50%" dy=".3em" fill="white" font-size="300" font-family="Arial" text-anchor="middle">⏳</text>
+        </svg>
+        <div class="title-text">プロセカ周回ツール</div>
+        <div class="win7-controls">
+            <div class="win-btn">
+                <svg viewBox="0 0 10 10"><path d="M1 9h8V8H1v1z"/></svg>
             </div>
-
-            <div id="tab-counter" class="tab-content">
-                <fieldset>
-                    <legend>周回数</legend>
-                    <div id="setup-view">
-                        <div class="field-row-stacked"><label>目標回数</label><input type="number" id="total-laps" value="10"></div>
-                        <section class="field-row" style="justify-content: center;"><button onclick="startGrind()">スタート</button></section>
-                    </div>
-                    <div id="grind-view" style="display:none;" class="counter-box">
-                        <div class="message-box" id="grind-message"></div>
-                        <div class="counter-value" id="remaining-val">0</div>
-                        <div class="button-group"><button onclick="decrement()">1回終了</button><button onclick="resetCounter()">リセット</button></div>
-                    </div>
-                </fieldset>
+            <div class="win-btn">
+                <svg viewBox="0 0 10 10"><path d="M1 1v8h8V1H1zm7 7H2V2h6v6z"/></svg>
             </div>
-
-            <div id="tab-history" class="tab-content">
-                <fieldset>
-                    <legend>履歴</legend>
-                    <div id="history-container"><div class="empty-state">履歴なし</div></div>
-                    <section class="field-row" style="justify-content: center; margin-top: 10px;"><button id="clear-history-btn" onclick="clearHistory()" style="display:none;">削除</button></section>
-                </fieldset>
+            <div class="win-btn close">
+                <svg viewBox="0 0 10 10"><path d="M1 1l8 8M9 1L1 9" stroke="white" stroke-width="1.5"/></svg>
             </div>
         </div>
-        <footer class="status-bar">
-            <p class="status-bar-field">PWA: <span id="pwa-status">Checking...</span></p>
-            <p class="status-bar-field">v1.2.0</p>
-        </footer>
+    </div>
+    
+    <div class="win7-content">
+        <!-- 計算タブ -->
+        <div id="tab-calc" class="tab-content active">
+            <div class="card">
+                <h2>マルチ実効値計算</h2>
+                <div class="input-group">
+                    <label>リーダースキル値 (%)</label>
+                    <input type="number" id="leader" pattern="\d*" placeholder="例: 130" value="130">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label>サブ1 (%)</label>
+                        <input type="number" class="sub-skill" pattern="\d*" placeholder="110" value="110">
+                    </div>
+                    <div>
+                        <label>サブ2 (%)</label>
+                        <input type="number" class="sub-skill" pattern="\d*" placeholder="110" value="110">
+                    </div>
+                    <div>
+                        <label>サブ3 (%)</label>
+                        <input type="number" class="sub-skill" pattern="\d*" placeholder="110" value="110">
+                    </div>
+                    <div>
+                        <label>サブ4 (%)</label>
+                        <input type="number" class="sub-skill" pattern="\d*" placeholder="110" value="110">
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top:15px;" onclick="calculate()">計算実行</button>
+            </div>
+            
+            <div class="result-display" id="calc-result" style="display:none;">
+                <div style="font-size: 0.85rem; color: #555;">マルチスコアアップ合計</div>
+                <div class="result-value" id="result-val">0%</div>
+            </div>
+        </div>
+
+        <!-- カウンタータブ -->
+        <div id="tab-counter" class="tab-content">
+            <div class="card">
+                <h2>周回カウンター</h2>
+                <div id="setup-view">
+                    <label>周回回数を設定</label>
+                    <input type="number" id="total-laps" pattern="\d*" placeholder="例: 10" value="10">
+                    <button class="btn btn-primary" style="margin-top:10px;" onclick="startGrind()">スタート</button>
+                </div>
+
+                <div id="grind-view" style="display:none; text-align: center;">
+                    <div id="grind-message" style="color:#d63384; font-weight:bold; margin-bottom:10px;"></div>
+                    <div style="font-size: 0.85rem; color: #666;">残り回数</div>
+                    <div class="counter-value" id="remaining-val">0</div>
+                    <button class="btn btn-mint" onclick="decrement()">1回完了</button>
+                    <button class="btn" onclick="resetCounter()" style="margin-top:10px; font-size: 0.8rem;">リセット</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 履歴タブ -->
+        <div id="tab-history" class="tab-content">
+            <div class="card">
+                <h2>周回履歴</h2>
+                <div id="history-container">
+                    <div style="text-align:center; color:#888; padding:20px;">履歴がありません</div>
+                </div>
+                <button id="clear-history-btn" class="btn" onclick="clearHistory()" style="display:none; margin-top:10px; color:red;">履歴を削除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="win7-taskbar">
+    <div class="taskbar-item active" onclick="showTab('calc')" id="task-calc">
+        <span>📊</span>
+    </div>
+    <div class="taskbar-item" onclick="showTab('counter')" id="task-counter">
+        <span>⏱️</span>
+    </div>
+    <div class="taskbar-item" onclick="showTab('history')" id="task-history">
+        <span>📜</span>
     </div>
 </div>
 
 <script>
     let state = {
-        remaining: parseInt(localStorage.getItem('proseka_remaining') || 0),
+        remaining: 0,
         history: JSON.parse(localStorage.getItem('proseka_history') || '[]'),
-        isGrinding: !!localStorage.getItem('proseka_remaining')
+        isGrinding: false
     };
 
     window.onload = () => {
-        if (state.isGrinding) updateCounterUI();
+        const savedRemaining = localStorage.getItem('proseka_remaining');
+        if (savedRemaining !== null && savedRemaining > 0) {
+            state.remaining = parseInt(savedRemaining);
+            state.isGrinding = true;
+            updateCounterUI();
+        }
         renderHistory();
-        
-        const pwaStatus = document.getElementById('pwa-status');
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./service-worker.js', { scope: './' })
-                .then(r => {
-                    console.log('SW OK');
-                    pwaStatus.innerText = 'OK (Ready)';
-                    pwaStatus.style.color = 'green';
-                })
-                .catch(e => {
-                    console.error('SW Error:', e);
-                    pwaStatus.innerText = 'ERROR (SW)';
-                    pwaStatus.style.color = 'red';
-                });
-        } else {
-            pwaStatus.innerText = 'NO SW SUPPORT';
-            pwaStatus.style.color = 'gray';
+            navigator.serviceWorker.register('service-worker.js');
         }
     };
 
-    function showTab(id) {
-        event.preventDefault();
-        document.querySelectorAll('.tab-content, menu li').forEach(el => el.classList.remove('active'));
-        document.getElementById('tab-' + id).classList.add('active');
-        document.getElementById('tab-btn-' + id).classList.add('active');
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.taskbar-item').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+        document.getElementById(`task-${tabId}`).classList.add('active');
     }
 
     function calculate() {
         const leader = parseFloat(document.getElementById('leader').value) || 0;
-        const sub = parseFloat(document.getElementById('sub-total').value) || 0;
-        document.getElementById('result-val').innerText = (leader + sub * 0.2).toFixed(1) + '%';
-        document.getElementById('calc-result').style.display = 'block';
+        const subs = Array.from(document.querySelectorAll('.sub-skill')).map(input => parseFloat(input.value) || 0);
+        const result = leader + (subs.reduce((a, b) => a + b, 0) * 0.2);
+        const resultDisplay = document.getElementById('calc-result');
+        const resultVal = document.getElementById('result-val');
+        resultVal.innerText = result.toFixed(1) + '%';
+        resultDisplay.style.display = 'block';
     }
 
     function startGrind() {
-        state.remaining = parseInt(document.getElementById('total-laps').value) || 0;
-        if (state.remaining <= 0) return;
+        const total = parseInt(document.getElementById('total-laps').value) || 0;
+        if (total <= 0) return;
+        state.remaining = total;
         state.isGrinding = true;
-        save();
+        localStorage.setItem('proseka_remaining', state.remaining);
         updateCounterUI();
     }
 
     function decrement() {
         if (state.remaining <= 0) return;
         state.remaining--;
+        localStorage.setItem('proseka_remaining', state.remaining);
         if (state.remaining === 0) {
             saveToHistory();
             localStorage.removeItem('proseka_remaining');
-            state.isGrinding = false;
-        } else {
-            save();
         }
         updateCounterUI();
+        if (navigator.vibrate) navigator.vibrate(50);
     }
 
-    function resetCounter() { if (confirm('リセット？')) { state.remaining = 0; state.isGrinding = false; localStorage.removeItem('proseka_remaining'); updateCounterUI(); } }
-    function save() { localStorage.setItem('proseka_remaining', state.remaining); }
+    function resetCounter() {
+        if (confirm('リセットしますか？')) {
+            state.remaining = 0;
+            state.isGrinding = false;
+            localStorage.removeItem('proseka_remaining');
+            updateCounterUI();
+        }
+    }
 
     function updateCounterUI() {
-        document.getElementById('setup-view').style.display = state.isGrinding ? 'none' : 'block';
-        document.getElementById('grind-view').style.display = state.isGrinding ? 'block' : 'none';
-        document.getElementById('remaining-val').innerText = state.remaining;
-        const msg = document.getElementById('grind-message');
-        if (state.remaining === 1) msg.innerText = 'ラスト！';
-        else if (state.remaining === 0 && state.isGrinding) msg.innerText = 'お疲れさま！';
-        else msg.innerText = '';
+        const setupView = document.getElementById('setup-view');
+        const grindView = document.getElementById('grind-view');
+        const remainingVal = document.getElementById('remaining-val');
+        const messageBox = document.getElementById('grind-message');
+
+        if (state.isGrinding) {
+            setupView.style.display = 'none';
+            grindView.style.display = 'block';
+            remainingVal.innerText = state.remaining;
+            messageBox.innerText = state.remaining === 1 ? '次でラスト！' : (state.remaining === 0 ? 'お疲れ様！' : '');
+        } else {
+            setupView.style.display = 'block';
+            grindView.style.display = 'none';
+        }
     }
 
     function saveToHistory() {
-        const d = new Date();
-        state.history.unshift({ date: `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${d.getMinutes().toString().padStart(2,'0')}`, message: '周回終了' });
+        const now = new Date();
+        const dateStr = `${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+        state.history.unshift({ date: dateStr, message: '完了' });
+        if (state.history.length > 50) state.history.pop();
         localStorage.setItem('proseka_history', JSON.stringify(state.history));
         renderHistory();
     }
 
     function renderHistory() {
-        const c = document.getElementById('history-container');
-        const b = document.getElementById('clear-history-btn');
-        if (state.history.length === 0) { c.innerHTML = '<div class="empty-state">履歴なし</div>'; b.style.display = 'none'; return; }
-        c.innerHTML = '<ul class="history-list">' + state.history.map(i => `<li class="history-item"><span>${i.date}</span><span>${i.message}</span></li>`).join('') + '</ul>';
-        b.style.display = 'block';
+        const container = document.getElementById('history-container');
+        const clearBtn = document.getElementById('clear-history-btn');
+        if (state.history.length === 0) {
+            container.innerHTML = '<div style="text-align:center; color:#888; padding:20px;">履歴がありません</div>';
+            clearBtn.style.display = 'none';
+            return;
+        }
+        let html = '<div style="display:flex; flex-direction:column; gap:8px;">';
+        state.history.forEach(item => {
+            html += `<div style="display:flex; justify-content:space-between; font-size:0.9rem; border-bottom:1px solid #eee; padding-bottom:5px;"><span>${item.date}</span><span style="color:#d63384; font-weight:bold;">${item.message}</span></div>`;
+        });
+        html += '</div>';
+        container.innerHTML = html;
+        clearBtn.style.display = 'block';
     }
 
-    function clearHistory() { if (confirm('削除？')) { state.history = []; localStorage.setItem('proseka_history', '[]'); renderHistory(); } }
+    function clearHistory() {
+        if (confirm('履歴を削除しますか？')) {
+            state.history = [];
+            localStorage.setItem('proseka_history', '[]');
+            renderHistory();
+        }
+    }
 </script>
+
 </body>
 </html>

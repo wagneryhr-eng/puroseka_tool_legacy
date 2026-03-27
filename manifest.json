@@ -1,31 +1,16 @@
 {
   "name": "プロセカ周回ツール",
   "short_name": "周回ツール",
-  "description": "プロセカのスコア計算と周回管理ツール",
-  "start_url": "./index.html",
-  "scope": "./",
+  "description": "プロセカの周回をサポートするツールです",
+  "start_url": "index.html",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#87CEEB",
-  "theme_color": "#FF69B4",
+  "background_color": "#ffcce5",
+  "theme_color": "#ff88aa",
   "icons": [
     {
-      "src": "https://via.placeholder.com/192x192/FF69B4/FFFFFF.png?text=P",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://via.placeholder.com/192x192/FF69B4/FFFFFF.png?text=P",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "https://via.placeholder.com/512x512/FF69B4/FFFFFF.png?text=Proseka",
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIyNTYiIGZpbGw9IiNmZjg4YWEiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZHk9Ii4zZW0iIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjMwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7ilaY8L3RleHQ+PC9zdmc+",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/svg+xml"
     }
   ]
 }
